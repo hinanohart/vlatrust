@@ -68,6 +68,13 @@ def two_sample_diff_ci(
     if av.size == 0 or bv.size == 0:
         return (float("nan"), float("nan"), float("nan"))
     point = float(statistic(av)) - float(statistic(bv))
+    if av.size < 2 or bv.size < 2:
+        # A percentile bootstrap of a singleton is degenerate: every resample
+        # reproduces the sole point, so a side with n==1 contributes zero
+        # variance and the difference CI understates uncertainty (two singletons
+        # give a zero-width CI that spuriously excludes zero). Report the point
+        # but a NaN CI => never claimable. R5: no claim without estimable spread.
+        return (point, float("nan"), float("nan"))
     gen = _as_gen(rng)
     ia = gen.integers(0, av.size, size=(n_boot, av.size))
     ib = gen.integers(0, bv.size, size=(n_boot, bv.size))
