@@ -8,7 +8,7 @@ Third-party backends and datasets (OPTIONAL extras — NOT bundled in this repo)
 ================================================================================
 
 vlatrust's core (src/vlatrust/core, src/vlatrust/report) depends ONLY on numpy
-and scipy (BSD-3-Clause) and bundles no third-party model code or weights.
+(BSD-3-Clause) and bundles no third-party model code or weights.
 
 The following are reachable only through optional extras. vlatrust imports them
 lazily and never redistributes their code or weights. You are responsible for
@@ -35,4 +35,4 @@ applied to recorded traces) and does not reuse LIBERO-plus code or assets. If
 LIBERO-plus later adds a permissive LICENSE, an optional non-bundling adapter
 may be reconsidered.
 
-NumPy and SciPy are distributed under the BSD-3-Clause license.
+NumPy is distributed under the BSD-3-Clause license.

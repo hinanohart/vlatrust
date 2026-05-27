@@ -19,8 +19,8 @@ core), emitting:
 
 **v0.1.0a1 is a pre-alpha _framework_.** What is and isn't backed by data:
 
-- ✅ **The metric's behaviour is validated** — 168 CPU tests, plus an env-stamped
-  measurement (`bench_results/v0.1.0a1_falsification.json`).
+- ✅ **The metric's behaviour is validated** — a 163-test CPU suite, plus an
+  env-stamped measurement (`bench_results/v0.1.0a1_falsification.json`).
 - ⚠️ **The falsification numbers below are from deterministic _synthetic_ fixtures**
   (`MockPolicy`), **not** recorded real-robot traces. They show the *metric* is
   correct, not that any specific real policy behaves a certain way.
@@ -103,6 +103,8 @@ $ vlatrust score --mock              # illustrative (deterministic synthetic inp
 Trust-Shift: 0.749  (source=token_entropy, physically_valid=True)
   tracking=0.970
   inverse_brier=0.867
+  retained_reliability=0.410
+  hard_valid_factor=1.000
   abstention_gate=on
 ```
 

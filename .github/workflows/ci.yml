@@ -70,3 +70,5 @@ jobs:
         with:
           python-version: "3.12"
       - run: bash scripts/honest_marketing_check.sh
+      - name: Self-test the firewall (detector must trip on a planted fixture)
+        run: bash scripts/honest_marketing_check.sh --selftest
