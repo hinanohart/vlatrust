@@ -131,6 +131,12 @@ def checks(step: str, dry: bool) -> list[tuple[bool, str]]:
             _file("bench_results/v0.1.0a1_falsification.json"),
             _pytest("measurement or ingest", dry),
         ]
+    if s == "S7":
+        out += [
+            _file("README.md"),
+            _file("scripts/honest_marketing_check.sh"),
+            _pytest("honest_marketing", dry),
+        ]
     if not out:
         out.append((False, f"unknown step {step!r}"))
     return out
