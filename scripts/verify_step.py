@@ -111,6 +111,15 @@ def checks(step: str, dry: bool) -> list[tuple[bool, str]]:
             _imports("vlatrust.adapters.mock"),
             _has_symbol("vlatrust.adapters.base", "PolicyBackend"),
         ]
+    if s == "S4":
+        out += [
+            _imports("vlatrust.core.perturb.inject"),
+            _imports("vlatrust.core.perturb.ranking"),
+            _imports("vlatrust.adapters.sim_mujoco"),
+            _has_symbol("vlatrust.core.perturb.inject", "perturb_payloads"),
+            _has_symbol("vlatrust.core.perturb.ranking", "rank_modalities"),
+            _pytest("inject or perturb or collapse", dry),
+        ]
     if s == "S5":
         out += [
             _imports("vlatrust.report.cli"),
