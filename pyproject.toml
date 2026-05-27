@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vlatrust"
+version = "0.1.0a1"
+description = "Calibration-under-shift trust harness for Vision-Language-Action (VLA) policies: does confidence track competence as distribution shift rises?"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "hinanohart" }]
+keywords = [
+  "vla", "vision-language-action", "robot-policy", "conformal-prediction",
+  "calibration", "uncertainty", "reliability", "distribution-shift", "abstention",
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+# Recorded-trace path is the DEFAULT and needs NOTHING beyond core.
+lerobot = ["datasets>=2.0", "pyarrow>=12"]
+openvla = ["torch>=2.1", "transformers>=4.40"]   # Tier-A token-entropy backend; falsification fixture
+openpi = ["torch>=2.1"]                          # Tier-B; Gemma weights ToU, code-not-bundled fetch
+maniskill = ["mani-skill>=3.0"]                  # GPU; renderer-heavy perturbation dims (v0.1.1)
+# NOTE: there is intentionally NO [libero] extra. LIBERO-plus ships no LICENSE
+# file (all-rights-reserved); vlatrust neither imports nor bundles it. See NOTICE.
+dev = ["pytest>=7", "hypothesis>=6.80", "ruff>=0.4"]
+
+[project.scripts]
+vlatrust = "vlatrust.report.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/hinanohart/vlatrust"
+Repository = "https://github.com/hinanohart/vlatrust"
+Issues = "https://github.com/hinanohart/vlatrust/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vlatrust"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/vlatrust", "LICENSE", "NOTICE", "README.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+ignore = ["E501"]

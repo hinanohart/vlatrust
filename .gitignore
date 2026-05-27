@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Secrets / credentials — NEVER commit (R11)
+.env
+.env.*
+*.pem
+*.key
+*token*
+*secret*
+
+# Model weights — never bundle (license + size)
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+*.bin
+*.gguf
+
+# Build-session local state (not part of the package)
+.vlatrust-build.lock
+.build_sid
+.vlatrust-progress.json
+
+# Failure museum (R8): keep the dir, ignore contents
+experiments/_wip/*
+!experiments/_wip/.gitkeep
+
+# Local measurement outputs are committed deliberately (bench_results/), so not ignored.
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
