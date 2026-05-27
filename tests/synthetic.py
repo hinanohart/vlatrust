@@ -36,16 +36,16 @@ def _make_trace(
     for _ in range(horizon):
         action = rng.normal(scale=0.1, size=ACTION_DIM)
         if calibrated:
-            # confidence tracks the actual chance of success; a touch of noise
-            conf = float(np.clip(success_prob + rng.normal(scale=0.03), 0.0, 1.0))
-            # nonconformity (residual) grows as competence drops
-            resid = float(abs(rng.normal(loc=(1.0 - success_prob), scale=0.05)))
-            nlp = float(-np.log(max(conf, 1e-6)))
+            # confidence tracks the actual chance of success; a touch of noise.
+            # Floor/cap keeps -log(conf) bounded so nonconformity is well behaved.
+            conf = float(np.clip(success_prob + rng.normal(scale=0.03), 0.02, 0.98))
         else:
             # overconfident: confidence pinned high regardless of competence
-            conf = float(np.clip(0.95 + rng.normal(scale=0.02), 0.0, 1.0))
-            resid = float(abs(rng.normal(loc=(1.0 - success_prob), scale=0.05)))
-            nlp = float(-np.log(max(conf, 1e-6)))
+            conf = float(np.clip(0.95 + rng.normal(scale=0.02), 0.02, 0.98))
+        # nonconformity (residual) grows as competence drops, identically for
+        # both archetypes — only the confidence signal differs between them.
+        resid = float(abs(rng.normal(loc=(1.0 - success_prob), scale=0.05)))
+        nlp = float(-np.log(conf))
         steps.append(
             Step(
                 action=action,
