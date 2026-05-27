@@ -1,7 +1,7 @@
 """vlatrust core — simulator-independent data model and math.
 
-Depends only on numpy/scipy. Importing this package never imports torch, a
-simulator, or any policy weights.
+Depends only on numpy + the standard library. Importing this package never
+imports torch, a simulator, or any policy weights.
 """
 
 from .types import (

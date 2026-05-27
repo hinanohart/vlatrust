@@ -101,6 +101,39 @@ def test_scorecard_serializes_to_json(calibrated_ts):
     assert round_trip["trust_shift"] is not None
 
 
+def test_scorecard_json_is_strict_on_fail_closed_path():
+    # Tiny calib set => conformal q_hat = +inf (the fail-closed sentinel). The
+    # serialized dict must remain RFC-8259 strict (no Infinity/NaN tokens), so a
+    # draft-07 validator / cross-language consumer can parse it: non-finite -> null.
+    import numpy as np
+
+    from vlatrust.core.types import (
+        ConfidenceSource as CS,
+    )
+    from vlatrust.core.types import (
+        Step,
+        Trace,
+        TraceSet,
+    )
+
+    tiny = TraceSet(
+        tuple(
+            Trace(
+                steps=(Step(action=np.zeros(7), confidence=0.9, neg_log_prob=0.1),),
+                confidence_source=CS.TOKEN_ENTROPY,
+                success=bool(i % 2),
+                trace_id=f"t{i}",
+            )
+            for i in range(4)
+        )
+    )
+    sc = score_traceset(tiny, alpha=0.1, rng=0)
+    # q_hat is the +inf fail-closed sentinel here; strict JSON must still succeed.
+    assert sc.conformal is not None
+    blob = json.dumps(sc.to_dict(), allow_nan=False)  # raises if Infinity/NaN leak
+    assert json.loads(blob)["conformal"]["q_hat"] is None
+
+
 # --- aggregate helpers ------------------------------------------------------ #
 
 

@@ -50,7 +50,7 @@ and a fail-closed out-of-distribution action gate — bundled as one released ha
 ## Install
 
 ```bash
-pip install vlatrust                 # core: recorded-trace path, numpy/scipy only
+pip install vlatrust                 # core: recorded-trace path, numpy only
 pip install "vlatrust[openvla]"      # Tier-A token-confidence backend (falsification fixture)
 pip install "vlatrust[lerobot]"      # ingest LeRobot datasets
 ```

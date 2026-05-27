@@ -17,6 +17,7 @@ Design rules:
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from enum import Enum, StrEnum
 from typing import Any
@@ -362,8 +363,14 @@ def _to_jsonable(obj: object) -> Any:
         return {f.name: _to_jsonable(getattr(obj, f.name)) for f in fields(obj)}
     if isinstance(obj, Enum):
         return obj.value
-    if isinstance(obj, (np.floating,)):
-        return float(obj)
+    if isinstance(obj, (float, np.floating)):
+        # Map non-finite to null: RFC-8259 / draft-07 JSON has no Infinity/NaN
+        # token. The fail-closed sentinel (q_hat=+inf) and undefined values
+        # (nan fragility) survive as ``null``; their meaning is carried by
+        # companion fields (abstention_rate=1.0, mechanism="insufficient", the
+        # *_claimable flags), so no information is lost.
+        f = float(obj)
+        return f if math.isfinite(f) else None
     if isinstance(obj, (np.integer,)):
         return int(obj)
     if isinstance(obj, np.ndarray):
