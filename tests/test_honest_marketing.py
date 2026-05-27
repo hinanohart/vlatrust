@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -17,19 +18,27 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / "scripts" / "honest_marketing_check.sh"
 
-pytestmark = pytest.mark.skipif(shutil.which("bash") is None, reason="bash unavailable")
+# The shell firewall is authoritatively run by the ubuntu honest-marketing CI job.
+# Invoking it from pytest is a convenience; skip where a POSIX bash is unreliable
+# (Windows git-bash mktemp/trap differ). The pure-python README test runs anywhere.
+_needs_bash = pytest.mark.skipif(
+    shutil.which("bash") is None or sys.platform == "win32",
+    reason="POSIX bash required",
+)
 
 
 def _run(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(["bash", str(SCRIPT), *args], cwd=ROOT, capture_output=True, text=True)
 
 
+@_needs_bash
 def test_live_tree_passes_firewall():
     r = _run()
     assert r.returncode == 0, r.stdout + r.stderr
     assert "honest-marketing: OK" in r.stdout
 
 
+@_needs_bash
 def test_selftest_proves_detector_trips():
     # --selftest plants a synthetic-without-disclaimer fixture and asserts the
     # detector catches it (and does not false-positive on a disclaimer'd one).
