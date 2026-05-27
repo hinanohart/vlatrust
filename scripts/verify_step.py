@@ -125,6 +125,12 @@ def checks(step: str, dry: bool) -> list[tuple[bool, str]]:
             _imports("vlatrust.report.cli"),
             _has_symbol("vlatrust.report.cli", "main"),
         ]
+    if s == "S6":
+        out += [
+            _file("scripts/measure_falsification.py"),
+            _file("bench_results/v0.1.0a1_falsification.json"),
+            _pytest("measurement or ingest", dry),
+        ]
     if not out:
         out.append((False, f"unknown step {step!r}"))
     return out

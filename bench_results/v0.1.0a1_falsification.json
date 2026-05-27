@@ -1,0 +1,59 @@
+{
+  "project": "vlatrust",
+  "version": "0.1.0a1",
+  "mode": "synthetic",
+  "disclaimer": "Inputs are deterministic MockPolicy archetypes, NOT recorded real-robot traces. These numbers validate the METRIC's behaviour, not any real VLA policy. Empirical real-trace collapse validation is deferred to v0.1.1.",
+  "gate_real": {
+    "status": "deferred-v0.1.1",
+    "reason": "Reproducing high-success->collapse on a recorded real trace needs live OpenVLA inference (GPU, out of a1 CPU scope) or a permissively-licensed graded-perturbation benchmark; LIBERO-plus has no license (G-LIB blocks it)."
+  },
+  "env": {
+    "timestamp_utc": "2026-05-27T19:38:47.130658+00:00",
+    "git_commit": "7b808d730bfbef15d486ada5430c987a85d7d3e4",
+    "python": "3.14.5",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "numpy": "2.4.6",
+    "seed": 0
+  },
+  "falsification_synthetic": {
+    "alpha_0.1": {
+      "calibrated_trust_shift": 0.7489807579264685,
+      "overconfident_trust_shift": 0.4957086967549392,
+      "calibrated_beats_overconfident": true,
+      "abstention_on": 0.7489807579264685,
+      "abstention_off": 0.7489807579264685,
+      "abstention_helps": false
+    },
+    "alpha_0.25": {
+      "calibrated_trust_shift": 0.7945363134820239,
+      "overconfident_trust_shift": 0.5029376124175898,
+      "calibrated_beats_overconfident": true,
+      "abstention_on": 0.7945363134820239,
+      "abstention_off": 0.7489807579264685,
+      "abstention_helps": true
+    },
+    "physics_gate": {
+      "all_invalid_trust_shift": 0.0,
+      "hard_valid_flag": false,
+      "zeroed": true
+    }
+  },
+  "real_math": {
+    "token_entropy": {
+      "peaked_confidence": 0.9999994744061012,
+      "peaked_neg_log_prob": 5.255940367248609e-07,
+      "uniform_confidence": 0.003906250000000001,
+      "uniform_neg_log_prob": 5.545177444479562,
+      "uniform_matches_1_over_256": true
+    },
+    "conformal_marginal_coverage": {
+      "nominal": 0.9,
+      "mean": 0.9004,
+      "ci95": [
+        0.8969833333333335,
+        0.9039166666666667
+      ],
+      "meets_guarantee": true
+    }
+  }
+}
