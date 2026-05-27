@@ -50,8 +50,10 @@ def test_selftest_proves_detector_trips():
 def test_readme_numbers_come_from_bench_results():
     import json
 
-    rec = json.loads((ROOT / "bench_results" / "v0.1.0a1_falsification.json").read_text())
-    readme = (ROOT / "README.md").read_text()
+    rec = json.loads(
+        (ROOT / "bench_results" / "v0.1.0a1_falsification.json").read_text(encoding="utf-8")
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
     a01 = rec["falsification_synthetic"]["alpha_0.1"]
     a025 = rec["falsification_synthetic"]["alpha_0.25"]
     cov = rec["real_math"]["conformal_marginal_coverage"]["mean"]

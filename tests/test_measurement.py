@@ -73,18 +73,18 @@ def test_ingest_success_labels_from_last_row():
 
 def test_bench_record_exists_and_is_strict_json():
     assert BENCH.exists(), "run scripts/measure_falsification.py to produce the bench record"
-    json.loads(BENCH.read_text())  # parses; written with allow_nan=False
+    json.loads(BENCH.read_text(encoding="utf-8"))  # parses; written with allow_nan=False
 
 
 def test_synthetic_mode_requires_disclaimer():
-    rec = json.loads(BENCH.read_text())
+    rec = json.loads(BENCH.read_text(encoding="utf-8"))
     if rec["mode"] == "synthetic":
         assert rec.get("disclaimer"), "synthetic mode MUST carry a disclaimer (firewall)"
         assert "NOT" in rec["disclaimer"]  # must say what it is not
 
 
 def test_gate_real_is_explicitly_resolved_not_silently_claimed():
-    rec = json.loads(BENCH.read_text())
+    rec = json.loads(BENCH.read_text(encoding="utf-8"))
     assert "gate_real" in rec
     assert rec["gate_real"]["status"] in ("met", "deferred-v0.1.1")
     if rec["gate_real"]["status"].startswith("deferred"):
@@ -92,7 +92,7 @@ def test_gate_real_is_explicitly_resolved_not_silently_claimed():
 
 
 def test_recorded_falsification_holds():
-    rec = json.loads(BENCH.read_text())
+    rec = json.loads(BENCH.read_text(encoding="utf-8"))
     a = rec["falsification_synthetic"]["alpha_0.1"]
     assert a["calibrated_beats_overconfident"] is True
     assert rec["falsification_synthetic"]["physics_gate"]["zeroed"] is True

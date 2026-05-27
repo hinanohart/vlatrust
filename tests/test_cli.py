@@ -29,9 +29,9 @@ def test_score_mock_writes_json_and_html(tmp_path, capsys):
     assert rc == 0
     text = capsys.readouterr().out
     assert "MOCK" in text and "Trust-Shift" in text  # disclaimer + headline
-    d = json.loads(out.read_text())
+    d = json.loads(out.read_text(encoding="utf-8"))
     assert d["trust_shift"] is not None
-    assert html.read_text().lstrip().startswith("<!doctype html>")
+    assert html.read_text(encoding="utf-8").lstrip().startswith("<!doctype html>")
 
 
 def test_score_mock_overconfident_lower(capsys):
