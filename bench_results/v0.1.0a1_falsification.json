@@ -8,8 +8,8 @@
     "reason": "Reproducing high-success->collapse on a recorded real trace needs live OpenVLA inference (GPU, out of a1 CPU scope) or a permissively-licensed graded-perturbation benchmark; LIBERO-plus has no license (G-LIB blocks it)."
   },
   "env": {
-    "timestamp_utc": "2026-05-27T19:38:47.130658+00:00",
-    "git_commit": "7b808d730bfbef15d486ada5430c987a85d7d3e4",
+    "timestamp_utc": "2026-05-27T20:20:27.337703+00:00",
+    "git_commit": "862c1dfefbc34420bbe2a9354ca3056cea89aed0",
     "python": "3.14.5",
     "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
     "numpy": "2.4.6",
