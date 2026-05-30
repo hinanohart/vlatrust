@@ -124,6 +124,6 @@ Trust-Shift: 0.749  (source=token_entropy, physically_valid=True)
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE). vlatrust bundles no
+MIT. See [LICENSE](LICENSE). vlatrust bundles no
 third-party model code or weights, and does **not** depend on LIBERO-plus
 (which ships no license).
