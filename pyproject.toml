@@ -9,7 +9,7 @@ description = "Calibration-under-shift trust harness for Vision-Language-Action 
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-license-files = ["LICENSE"]
+license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "hinanohart" }]
 keywords = [
   "vla", "vision-language-action", "robot-policy", "conformal-prediction",
