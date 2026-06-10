@@ -20,7 +20,7 @@ core), emitting:
 ```mermaid
 flowchart TD
     A[Recorded action traces] --> B[TraceSet ingestion]
-    B --> C[Perturbation injector\n14 dims across 7 modalities]
+    B --> C[Perturbation injector\n14 dims across 6 modalities]
     C --> D[Confidence extractor\nTier-A token entropy\nTier-B sampling variance]
     D --> E[Conformal predictor\nsplit conformal + Mondrian]
     D --> F[Reliability calibrator\nPAVA + inverse-Brier]
@@ -149,15 +149,14 @@ If `ConfidenceSource.NONE` the score is `None` — never fabricated (fail-closed
 
 ### Perturbation injector
 
-14 post-hoc perturbation dimensions span 7 modalities:
+14 post-hoc perturbation dimensions span 6 modalities:
 
 | Modality | Example dims |
 |----------|-------------|
 | `language` | instruction rephrasing, negation |
-| `vision` | brightness, blur, occlusion |
 | `init_state` | object pose jitter |
-| `sensor_noise` | proprioception noise |
-| `dynamics` | friction, mass scale |
+| `sensor_noise` | brightness shift, gaussian noise, salt-pepper |
+| `dynamics` | latency shift, step dropout |
 | `camera` | viewpoint shift |
 | `actuation` | action delay, scale |
 
