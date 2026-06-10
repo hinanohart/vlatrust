@@ -26,10 +26,10 @@ flowchart TD
     D --> F[Reliability calibrator<br>PAVA + inverse-Brier]
     D --> G[Collapse curve<br>success rate vs shift intensity]
     E --> H[OOD gate<br>fail-closed abstention]
-    F --> H
-    G --> I[Trust-Shift score<br>tracking x calibration x retained-reliability x hard-valid gate]
+    F --> I[Trust-Shift score<br>tracking x calibration x retained-reliability x hard-valid gate]
+    G --> J[Scorecard + HTML report]
     H --> I
-    I --> J[Scorecard + HTML report]
+    I --> J
 ```
 
 ## Status & honesty (read this first)
