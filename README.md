@@ -20,14 +20,14 @@ core), emitting:
 ```mermaid
 flowchart TD
     A[Recorded action traces] --> B[TraceSet ingestion]
-    B --> C[Perturbation injector\n14 dims across 6 modalities]
-    C --> D[Confidence extractor\nTier-A token entropy\nTier-B sampling variance]
-    D --> E[Conformal predictor\nsplit conformal + Mondrian]
-    D --> F[Reliability calibrator\nPAVA + inverse-Brier]
-    D --> G[Collapse curve\nsuccess rate vs shift intensity]
-    E --> H[OOD gate\nfail-closed abstention]
+    B --> C[Perturbation injector<br>14 dims across 6 modalities]
+    C --> D[Confidence extractor<br>Tier-A token entropy<br>Tier-B sampling variance]
+    D --> E[Conformal predictor<br>split conformal + Mondrian]
+    D --> F[Reliability calibrator<br>PAVA + inverse-Brier]
+    D --> G[Collapse curve<br>success rate vs shift intensity]
+    E --> H[OOD gate<br>fail-closed abstention]
     F --> H
-    G --> I[Trust-Shift score\ntracking x calibration x retained-reliability x hard-valid gate]
+    G --> I[Trust-Shift score<br>tracking x calibration x retained-reliability x hard-valid gate]
     H --> I
     I --> J[Scorecard + HTML report]
 ```
