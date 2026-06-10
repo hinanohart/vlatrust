@@ -1,0 +1,46 @@
+direction: down
+explanation: |md
+  ### vlatrust
+  **Calibration-under-shift trust harness for Vision-Language-Action (VLA) policies — measures whether confidence degrades in step with competence as distribution shift rises.**
+| {near: top-center}
+
+input: "① Recorded action traces" {shape: oval; style: {fill: "#6366f1"; font-color: "#ffffff"; stroke: "#4338ca"; bold: true; font-size: 18}}
+
+ingest: "② TraceSet ingestion" {style: {fill: "#0ea5e9"; font-color: "#ffffff"; stroke: "#0369a1"; bold: true; font-size: 18}}
+
+perturb: "③ Perturbation injector\n14 dims across 6 modalities" {style: {fill: "#fef3c7"; font-color: "#92400e"; stroke: "#f59e0b"; bold: true}}
+
+confidence: "④ Confidence extractor\nTier-A token entropy\nTier-B sampling variance" {style: {fill: "#0ea5e9"; font-color: "#ffffff"; stroke: "#0369a1"; bold: true}}
+
+analysis_zone: "Analysis Engines" {
+  style: {fill: "#f0fdf4"; stroke: "#10b981"; font-color: "#065f46"; bold: true; font-size: 16}
+  conformal: "⑤ Conformal predictor\nsplit conformal + Mondrian"
+  calibrator: "Reliability calibrator\nPAVA + inverse-Brier"
+  collapse: "Collapse curve\nsuccess rate vs shift intensity"
+  *.style.fill: "#dcfce7"; *.style.font-color: "#065f46"
+}
+
+ood: "OOD gate\nfail-closed abstention" {style: {fill: "#fef3c7"; font-color: "#92400e"; stroke: "#f59e0b"; bold: true}}
+
+trust: "⑥ Trust-Shift score\ntracking × calibration × retained-reliability × hard-valid gate" {style: {fill: "#dcfce7"; font-color: "#065f46"; stroke: "#10b981"; bold: true}}
+
+report: "⑦ Scorecard + HTML report" {shape: cylinder; style: {fill: "#fdf2f8"; font-color: "#9d174e"; stroke: "#ec4899"; bold: true}}
+
+input -> ingest: "① load"
+ingest -> perturb: "② inject"
+perturb -> confidence: "③ extract"
+confidence -> analysis_zone.conformal: "④ calibrate"
+confidence -> analysis_zone.calibrator: "④ calibrate"
+confidence -> analysis_zone.collapse: "④ plot"
+analysis_zone.conformal -> ood: "⑤ gate"
+analysis_zone.calibrator -> trust: "⑥ score"
+analysis_zone.collapse -> report: "⑦ chart"
+ood -> trust: "⑥ gate"
+trust -> report: "⑦ report"
+
+legend: "Legend" {
+  near: bottom-center
+  style: {fill: "#f8fafc"; stroke: "#cbd5e1"; font-size: 13}
+  e: "● entry"; c: "● core/engine"; p: "● analysis"; b: "● perturbation/OOD"; d: "● output"
+  e.style.font-color: "#4338ca"; c.style.font-color: "#0369a1"; p.style.font-color: "#10b981"; b.style.font-color: "#f59e0b"; d.style.font-color: "#ec4899"
+}

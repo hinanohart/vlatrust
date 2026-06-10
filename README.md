@@ -17,20 +17,9 @@ core), emitting:
 
 ## Architecture overview
 
-```mermaid
-flowchart TD
-    A[Recorded action traces] --> B[TraceSet ingestion]
-    B --> C[Perturbation injector<br>14 dims across 6 modalities]
-    C --> D[Confidence extractor<br>Tier-A token entropy<br>Tier-B sampling variance]
-    D --> E[Conformal predictor<br>split conformal + Mondrian]
-    D --> F[Reliability calibrator<br>PAVA + inverse-Brier]
-    D --> G[Collapse curve<br>success rate vs shift intensity]
-    E --> H[OOD gate<br>fail-closed abstention]
-    F --> I[Trust-Shift score<br>tracking x calibration x retained-reliability x hard-valid gate]
-    G --> J[Scorecard + HTML report]
-    H --> I
-    I --> J
-```
+<div align="center">
+  <img src="docs/architecture.png" alt="vlatrust architecture" width="840">
+</div>
 
 ## Status & honesty (read this first)
 
@@ -189,3 +178,4 @@ gate is fail-closed (unknown → ABSTAIN).
 MIT. See [LICENSE](LICENSE). vlatrust bundles no
 third-party model code or weights, and does **not** depend on LIBERO-plus
 (which ships no license).
+
