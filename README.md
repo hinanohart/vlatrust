@@ -15,6 +15,23 @@ core), emitting:
 - a **Reliability-Shift / collapse curve** (success rate vs. perturbation intensity, per modality),
 - a single **Trust-Shift score** that is high only when the policy *flags its own* degradation.
 
+## Architecture overview
+
+```mermaid
+flowchart TD
+    A[Recorded action traces] --> B[TraceSet ingestion]
+    B --> C[Perturbation injector\n14 dims across 7 modalities]
+    C --> D[Confidence extractor\nTier-A token entropy\nTier-B sampling variance]
+    D --> E[Conformal predictor\nsplit conformal + Mondrian]
+    D --> F[Reliability calibrator\nPAVA + inverse-Brier]
+    D --> G[Collapse curve\nsuccess rate vs shift intensity]
+    E --> H[OOD gate\nfail-closed abstention]
+    F --> H
+    G --> I[Trust-Shift score\ntracking x calibration x retained-reliability x hard-valid gate]
+    H --> I
+    I --> J[Scorecard + HTML report]
+```
+
 ## Status & honesty (read this first)
 
 **v0.1.0a1 is a pre-alpha _framework_.** What is and isn't backed by data:
@@ -107,6 +124,52 @@ Trust-Shift: 0.749  (source=token_entropy, physically_valid=True)
   hard_valid_factor=1.000
   abstention_gate=on
 ```
+
+## How it works
+
+### Trust-Shift score composition
+
+The headline score is composed multiplicatively through four axes:
+
+```
+Trust-Shift = hard_valid_factor × blend(tracking, calibration, retained_reliability)
+```
+
+- **hard_valid_factor** (`h`): fraction of trajectories with physically valid
+  actions (joint limits, velocity caps). A policy commanding invalid actions
+  is pulled toward 0 regardless of confidence.
+- **tracking** (`T`): `1 - mean_τ |confidence(τ) - success_rate(τ)|` across
+  perturbation intensities. This is the core claim — confidence must fall in
+  step with success as shift rises.
+- **calibration** (`C`): inverse-Brier score of confidence vs. success.
+- **retained_reliability** (`R`): success rate among trajectories the conformal
+  abstention gate accepts. A useful gate raises `R` above the accept-all baseline.
+
+If `ConfidenceSource.NONE` the score is `None` — never fabricated (fail-closed).
+
+### Perturbation injector
+
+14 post-hoc perturbation dimensions span 7 modalities:
+
+| Modality | Example dims |
+|----------|-------------|
+| `language` | instruction rephrasing, negation |
+| `vision` | brightness, blur, occlusion |
+| `init_state` | object pose jitter |
+| `sensor_noise` | proprioception noise |
+| `dynamics` | friction, mass scale |
+| `camera` | viewpoint shift |
+| `actuation` | action delay, scale |
+
+Perturbations are applied post-hoc to recorded traces; no simulator is needed
+for the CPU-only core path.
+
+### Conformal abstention gate
+
+Split conformal prediction (+ Mondrian stratification by modality + weighted
+variant) computes a finite-sample-valid nonconformity threshold at coverage level
+`1-α`. Steps whose nonconformity exceeds the threshold are abstained; the OOD
+gate is fail-closed (unknown → ABSTAIN).
 
 ## Scope
 
